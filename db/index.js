@@ -1,10 +1,6 @@
-// Require the Client constructor from the pg package
-const pg = require("pg");
+const { Client } = require("pg");
 
-// Create a constant, CONNECTION_STRING, from either process.env.DATABASE_URL or postgres://localhost:5432/phenomena-dev
-const client = new pg.Client(
-  process.env.DATABASE_URL || "postgres://localhost/phenomena-dev"
-);
+const client = new Client('postgres://localhost/phenomena-dev');
 
 // Create the client using new Client(CONNECTION_STRING)
 // Do not connect to the client in this file!
@@ -123,6 +119,13 @@ async function _getReport(reportId) {
   try {
     // SELECT the report with id equal to reportId
     // return the report
+    const SQL = `
+      SELECT * FROM reports
+      WHERE id = ${reportId};
+    `
+    const { rows } = await client.query(SQL);
+    const report= rows[0]
+    return report;
   } catch (error) {
     throw error;
   }
@@ -183,4 +186,5 @@ module.exports = {
   client,
   createReport,
   getOpenReports,
+  _getReport
 };

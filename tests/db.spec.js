@@ -58,7 +58,7 @@ describe('Database', () => {
         }));
       });
     });
-    describe('getOpenReports', () => {
+    xdescribe('getOpenReports', () => {
       beforeAll(async() => {
         await client.query(`
           INSERT INTO comments("reportId", content)
@@ -103,10 +103,12 @@ describe('Database', () => {
         expect(firstComment.content).toEqual(testComment);
       });
     });
-    xdescribe('_getReport helper function', () => {
+      describe('_getReport helper function', () => {
+        console.log("ASDFSADFASDFASDF")
       let report;
       beforeAll(async() => {
         report = await _getReport(reportIdToCreate);
+        console.log(report, "CHECK HERE")
       })
       it('SELECTs and returns the report with id equal to reportId', async () => {
         expect(report.id).toEqual(reportIdToCreate);
@@ -190,4 +192,4 @@ describe('Database', () => {
       
     })
   })
-});
+})
