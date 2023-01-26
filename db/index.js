@@ -121,9 +121,9 @@ async function _getReport(reportId) {
     // return the report
     const SQL = `
       SELECT * FROM reports
-      WHERE id = ${reportId};
+      WHERE id = $1;
     `
-    const { rows } = await client.query(SQL);
+    const { rows } = await client.query(SQL, [reportId]);
     const report= rows[0]
     return report;
   } catch (error) {
