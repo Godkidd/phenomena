@@ -57,10 +57,10 @@ async function getOpenReports() {
  */
 async function createReport(reportFields) {
   // Get all of the fields from the passed in object
-  const { title } = reportFields;
-  const { location } = reportFields;
-  const { description } = reportFields;
-  const { password } = reportFields;
+  const { title, location, description, password } = reportFields;
+  // const { location } = reportFields;
+  // const { description } = reportFields;
+  // const { password } = reportFields;
 
 
 
@@ -200,5 +200,6 @@ async function createReportComment(reportId, commentFields) {
 // export the client and all database functions below
 module.exports = {
   client,
-  createReport
+  createReport,
+  getOpenReports
 };
