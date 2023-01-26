@@ -142,6 +142,24 @@ async function _getReport(reportId) {
  */
 async function closeReport(reportId, password) {
   try {
+    const report = await _getReport(reportId)
+    if (report === undefined){
+      throw new Error("Report does not exist with that id")
+    }
+    else if(report.password !== password){
+      throw new Error('Password incorrect for this report, please try again')
+    }
+    else if(report.isOpen === false){
+      throw new Error('This report has already been closed')
+    } else if(report.isOpen === true) {
+        await client.query(`
+          UPDATE reports
+          SET "isOpen"='false'
+          WHERE id=$1;
+        `, [reportId]);
+    return {"message": "Report successfully closed!"}
+    }
+
     // First, actually grab the report with that id
     // If it doesn't exist, throw an error with a useful message
     // If the passwords don't match, throw an error
@@ -186,5 +204,6 @@ module.exports = {
   client,
   createReport,
   getOpenReports,
-  _getReport
+  _getReport,
+  closeReport,
 };

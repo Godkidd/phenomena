@@ -108,14 +108,13 @@ describe('Database', () => {
       let report;
       beforeAll(async() => {
         report = await _getReport(reportIdToCreate);
-        console.log(report, "CHECK HERE")
       })
       it('SELECTs and returns the report with id equal to reportId', async () => {
         expect(report.id).toEqual(reportIdToCreate);
       });
       
     })
-    xdescribe('closeReport', () => {
+    describe('closeReport', () => {
       let message, report;
       beforeAll(async() => {
       })
