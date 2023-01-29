@@ -184,14 +184,28 @@ async function closeReport(reportId, password) {
  */
 async function createReportComment(reportId, commentFields) {
   // read off the content from the commentFields
-
   try {
     // grab the report we are going to be commenting on
+    const report = await _getReport(reportId)
     // if it wasn't found, throw an error saying so
     // if it is not open, throw an error saying so
+    if (report === undefined){
+      throw new Error('That report does not exist, no comment has been made')
+    }
     // if the current date is past the expiration, throw an error saying so
+    const today = new Date()
+    const reportDate = new Date(report.expirationDate)
+     if (today.getDate() > reportDate.getDate()){
+       throw new Error(`The discussion time on this report has expired, no comment has been made`)
+     }
     // you can use Date.parse(report.expirationDate) < new Date() to check
+      if (report.isOpen === false){
+        throw new Error("That report has been closed, no comment has been made")
+      }
     // all go: insert a comment
+    if (report.isOpen === true){
+     
+    }
     // then update the expiration date to a day from now
     // finally, return the comment
   } catch (error) {
@@ -206,4 +220,5 @@ module.exports = {
   getOpenReports,
   _getReport,
   closeReport,
+  createReportComment,
 };

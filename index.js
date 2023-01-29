@@ -7,27 +7,27 @@
 // Require morgan and body-parser middleware
 
 // Have the server use morgan with setting 'dev'
-const express = require('express');
-const app = express();
-const cors = require('cors');
-const db = require('./db');
+// const express = require('express');
+// const app = express();
+// const cors = require('cors');
+// const db = require('./db');
 
-app.use(cors());
-app.use(express.json());
-app.use('/api', require('./api'));
+// app.use(cors());
+// app.use(express.json());
+// app.use('/api', require('./api'));
 
-const port = process.env.PORT || 3000;
+// const port = process.env.PORT || 3000;
 
-app.listen(port, async () => {
-    try{
-        console.log(`listening on port ${port}`);
-        await db.client.connect();
-    }
-    catch(ex) {
-        console.log(ex);
-    }
+// app.listen(port, async () => {
+//     try{
+//         console.log(`listening on port ${port}`);
+//         await db.client.connect();
+//     }
+//     catch(ex) {
+//         console.log(ex);
+//     }
     
-});
+// });
 
 // Import cors 
 // Have the server use cors()
