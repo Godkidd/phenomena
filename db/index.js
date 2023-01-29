@@ -183,31 +183,35 @@ async function closeReport(reportId, password) {
  * report to CURRENT_TIMESTAMP + interval '1 day'
  */
 async function createReportComment(reportId, commentFields) {
-  // read off the content from the commentFields
   try {
-    // grab the report we are going to be commenting on
-    const report = await _getReport(reportId)
-    // if it wasn't found, throw an error saying so
-    // if it is not open, throw an error saying so
-    if (report === undefined){
-      throw new Error('That report does not exist, no comment has been made')
+    const { rows: [reports] } = await client.query(`
+    SELECT * FROM reports
+    WHERE id = $1`, [reportId]);
+    if (reports===undefined){
+      throw new Error ('That report does not exist, no comment has been made');
+
     }
-    // if the current date is past the expiration, throw an error saying so
-    const today = new Date()
-    const reportDate = new Date(report.expirationDate)
-     if (today.getDate() > reportDate.getDate()){
-       throw new Error(`The discussion time on this report has expired, no comment has been made`)
-     }
-    // you can use Date.parse(report.expirationDate) < new Date() to check
-      if (report.isOpen === false){
-        throw new Error("That report has been closed, no comment has been made")
-      }
-    // all go: insert a comment
-    if (report.isOpen === true){
-     
+
+    const expiration = Date.parse(reports.expirationDate);
+    const currentDate = Date.now();
+    if(!reports.isOpen){
+      throw new Error ('That report has been closed, no comment has been made');
+  }
+  if (expiration < currentDate){
+    throw new Error ('The discussion time on this report has expired, no comment has been made');
+
+  }
+
+  const { rows: [comment] } = await client.query(`
+    INSERT INTO comments ("reportId", content )
+    VALUES ($1, $2)
+    RETURNING *`, [reportId, commentFields.content]
+  )
+    console.log("looking for comment", comment);
+    if(comment.content){
+      return comment;
     }
-    // then update the expiration date to a day from now
-    // finally, return the comment
+
   } catch (error) {
     throw error;
   }
