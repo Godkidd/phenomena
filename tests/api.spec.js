@@ -87,7 +87,7 @@ describe('API', () => {
       expect(postedReportResponse.description).toBe(reportToPost.description);
     });
   });
-  xdescribe('POST request for /api/reports/:reportId/comments', () => {
+  describe('POST request for /api/reports/:reportId/comments', () => {
     beforeAll(async() => {
     })
     it('on caught error, call next(error), which sends back a 500 error', async () => {
@@ -100,7 +100,7 @@ describe('API', () => {
       expect(postedCommentResponse.content).toBe(commentFieldsToPost.content);
     });
   });
-  xdescribe('DELETE request for /api/reports/:reportId', () => {
+  describe('DELETE request for /api/reports/:reportId', () => {
     let deleteResponse;
     beforeAll(async() => {
     })
@@ -127,7 +127,7 @@ describe('API', () => {
       expect(deleteResponse).toEqual({message: 'Report successfully closed!'});
     });
   });
- xdescribe('Properly handles Not Found requests', () => {
+ describe('Properly handles Not Found requests', () => {
     beforeAll(async() => {
     })
     it('Sends back 404 not found', async () => {
